@@ -1,0 +1,17 @@
+# CML Server Connection
+cml_address     = "https://your-cml-server.example.com"  # NO trailing slash
+cml_username    = "admin"
+cml_password    = "your-password-here"
+cml_skip_verify = true  # Set to false if using valid TLS certificates
+
+# Lab Configuration
+lab_folder        = "lab01"
+topology_filename = "TF_-_Topo_Automation.yaml"
+
+# Optional: Override lab title and description
+# lab_title       = "My Custom Lab Title"
+# lab_description = "My custom lab description"
+
+# Lifecycle Configuration
+auto_start      = true   # Automatically start nodes after provisioning
+wait_for_ready  = true   # Wait for nodes to boot before completing
