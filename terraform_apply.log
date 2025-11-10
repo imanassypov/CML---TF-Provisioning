@@ -1,0 +1,135 @@
+[0m[1mnull_resource.import_lab: Refreshing state... [id=8373720783111506232][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+[31m-[0m/[32m+[0m destroy and then create replacement[0m
+ [36m<=[0m read (data resources)[0m
+
+Terraform will perform the following actions:
+
+[1m  # data.cml2_lab.imported_lab[0m will be read during apply
+  # (config refers to values not yet known)
+[0m [36m<=[0m[0m data "cml2_lab" "imported_lab" {
+      [32m+[0m[0m id  = (known after apply)
+      [32m+[0m[0m lab = (known after apply)
+    }
+
+[1m  # data.local_file.lab_id[0m will be read during apply
+  # (depends on a resource or a module with changes pending)
+[0m [36m<=[0m[0m data "local_file" "lab_id" {
+      [32m+[0m[0m content              = (known after apply)
+      [32m+[0m[0m content_base64       = (known after apply)
+      [32m+[0m[0m content_base64sha256 = (known after apply)
+      [32m+[0m[0m content_base64sha512 = (known after apply)
+      [32m+[0m[0m content_md5          = (known after apply)
+      [32m+[0m[0m content_sha1         = (known after apply)
+      [32m+[0m[0m content_sha256       = (known after apply)
+      [32m+[0m[0m content_sha512       = (known after apply)
+      [32m+[0m[0m filename             = "./.lab_id.txt"
+      [32m+[0m[0m id                   = (known after apply)
+    }
+
+[1m  # cml2_lifecycle.lab_lifecycle[0m will be created
+[0m  [32m+[0m[0m resource "cml2_lifecycle" "lab_lifecycle" {
+      [32m+[0m[0m booted   = (known after apply)
+      [32m+[0m[0m elements = [
+          [32m+[0m[0m "n0",
+          [32m+[0m[0m "n1",
+          [32m+[0m[0m "n2",
+          [32m+[0m[0m "n3",
+          [32m+[0m[0m "l0",
+          [32m+[0m[0m "l1",
+          [32m+[0m[0m "l2",
+          [32m+[0m[0m "l3",
+        ]
+      [32m+[0m[0m id       = (known after apply)
+      [32m+[0m[0m lab_id   = (known after apply)
+      [32m+[0m[0m nodes    = (known after apply)
+      [32m+[0m[0m state    = "STARTED"
+      [32m+[0m[0m wait     = true
+    }
+
+[1m  # null_resource.import_lab[0m is tainted, so must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "null_resource" "import_lab" {
+      [33m~[0m[0m id       = "8373720783111506232" -> (known after apply)
+        [90m# (1 unchanged attribute hidden)[0m[0m
+    }
+
+[1mPlan:[0m 2 to add, 0 to change, 1 to destroy.
+[0m
+Changes to Outputs:
+  [32m+[0m[0m booted             = (known after apply)
+  [32m+[0m[0m deployment_summary = (known after apply)
+  [32m+[0m[0m lab_id             = (known after apply)
+  [32m+[0m[0m lab_title          = (known after apply)
+  [32m+[0m[0m link_count         = (known after apply)
+  [32m+[0m[0m node_count         = (known after apply)
+[0m[1mnull_resource.import_lab: Destroying... [id=8373720783111506232][0m[0m
+[0m[1mnull_resource.import_lab: Destruction complete after 0s[0m
+[0m[1mnull_resource.import_lab: Creating...[0m[0m
+[0m[1mnull_resource.import_lab: Provisioning with 'local-exec'...[0m[0m
+[0m[1mnull_resource.import_lab (local-exec):[0m [0m(output suppressed due to sensitive value in config)
+[0m[1mnull_resource.import_lab (local-exec):[0m [0m(output suppressed due to sensitive value in config)
+[0m[1mnull_resource.import_lab (local-exec):[0m [0m(output suppressed due to sensitive value in config)
+[0m[1mnull_resource.import_lab (local-exec):[0m [0m(output suppressed due to sensitive value in config)
+[0m[1mnull_resource.import_lab: Creation complete after 2s [id=3091424851607632902][0m
+[0m[1mdata.local_file.lab_id: Reading...[0m[0m
+[0m[1mdata.local_file.lab_id: Read complete after 0s [id=6c780588f2a53a1920d953cc14e2617ca01170e4][0m
+[0m[1mdata.cml2_lab.imported_lab: Reading...[0m[0m
+[0m[1mdata.cml2_lab.imported_lab: Read complete after 1s [id=38bc0703-4bdd-475f-9179-980f49a9e546][0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Creating...[0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [10s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [20s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [30s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [40s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [50s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [1m0s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [1m10s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [1m20s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [1m30s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [1m40s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [1m50s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [2m0s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [2m10s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [2m20s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [2m30s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [2m40s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [2m50s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [3m0s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [3m10s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [3m20s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [3m30s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [3m40s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [3m50s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [4m0s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Still creating... [4m10s elapsed][0m[0m
+[0m[1mcml2_lifecycle.lab_lifecycle: Creation complete after 4m17s [id=32f897e9-65cf-405e-87c6-c7003440c1b2][0m
+[0m[1m[32m
+Apply complete! Resources: 2 added, 0 changed, 1 destroyed.
+[0m[0m[1m[32m
+Outputs:
+
+[0mbooted = true
+deployment_summary = <<EOT
+  
+═══════════════════════════════════════════════════════════
+CML Lab Deployment Summary
+═══════════════════════════════════════════════════════════
+Lab ID:          38bc0703-4bdd-475f-9179-980f49a9e546
+Lab Title:       TF - Topo Automation
+Lab State:       STARTED
+Total Nodes:     4
+Total Links:     4
+All Booted:      true
+Topology Source: lab01/TF_-_Topo_Automation.yaml
+═══════════════════════════════════════════════════════════
+  
+Access your lab at: https://cml.maple.ciscolabs.com
+
+EOT
+lab_id = "38bc0703-4bdd-475f-9179-980f49a9e546"
+lab_state = "STARTED"
+lab_title = "TF - Topo Automation"
+link_count = 4
+node_count = 4

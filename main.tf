@@ -32,6 +32,14 @@ locals {
   # Extract lab title from YAML or use provided variable
   lab_title_final = var.lab_title != "" ? var.lab_title : try(local.topology_yaml.lab.title, "TF Provisioned Lab")
   lab_description_final = var.lab_description != "" ? var.lab_description : try(local.topology_yaml.lab.description, "Lab provisioned via Terraform from ${var.lab_folder}")
+  
+  # Build configuration map: node_label => config_file_content (if exists)
+  # Configuration files should be named: <node_label>.cfg in the lab folder
+  node_configs = {
+    for node in local.topology_yaml.nodes :
+    node.label => try(file("${var.lab_folder}/${node.label}.cfg"), "")
+    if node.label != null
+  }
 }
 
 # Import the lab topology using CML API
@@ -46,11 +54,12 @@ resource "null_resource" "import_lab" {
 
   provisioner "local-exec" {
     command = <<-EOT
-      python3 -c '
+      python3 << 'PYTHON_EOF'
 import requests
 import json
 import sys
 import urllib.parse
+import yaml
 
 # Disable SSL warnings for self-signed certs
 import urllib3
@@ -68,22 +77,38 @@ if auth_response.status_code != 200:
     print(f"Authentication failed: {auth_response.status_code} - {auth_response.text}")
     sys.exit(1)
 
-token = auth_response.text.strip("\"")
+token = auth_response.text.strip('"')
 headers = {
     "Authorization": f"Bearer {token}",
     "Content-Type": "application/x-yaml"
 }
 
-# Read topology file
+# Read and parse topology file
 with open("${local.topology_file}", "r") as f:
-    topology_data = f.read()
+    topology_data = yaml.safe_load(f)
+
+# Inject configurations from local files
+node_configs = ${jsonencode(local.node_configs)}
+
+for node in topology_data.get('nodes', []):
+    node_label = node.get('label')
+    if node_label and node_label in node_configs and node_configs[node_label]:
+        # Store config as a single string (not array) for CML import
+        node['configuration'] = node_configs[node_label]
+        print(f"Injected configuration for {node_label}")
+    else:
+        # Set empty string if no configuration
+        node['configuration'] = ""
+
+# Convert back to YAML
+topology_yaml_str = yaml.dump(topology_data, default_flow_style=False, sort_keys=False)
 
 # Import lab
 title = urllib.parse.quote("${local.lab_title_final}")
 url = f"${var.cml_address}/api/v0/import?title={title}"
 response = requests.post(
     url,
-    data=topology_data,
+    data=topology_yaml_str,
     headers=headers,
     verify=False
 )
@@ -96,7 +121,7 @@ if response.status_code in [200, 201]:
 else:
     print(f"Error: {response.status_code} - {response.text}")
     sys.exit(1)
-'
+PYTHON_EOF
     EOT
   }
 

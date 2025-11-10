@@ -23,18 +23,18 @@ This solution uses Terraform with the CML2 provider to:
 ## Prerequisites
 
 - [Terraform](https://www.terraform.io/downloads.html) >= 1.1.0
-- Python 3.x with `requests` library installed (`pip3 install requests`)
+- Python 3.x with `requests` and `pyyaml` libraries installed
 - Access to a CML server (version 2.x)
 - Valid CML credentials with permissions to create and manage labs
 
-> **Note**: The deployment uses Python to interact with the CML API for importing YAML topologies. Ensure Python 3 and the `requests` library are available in your PATH.
+> **Note**: The deployment uses Python to interact with the CML API for importing YAML topologies and injecting configurations. Ensure Python 3 and required libraries are available in your PATH.
 
 ### Installing Python Dependencies
 
 ```bash
-pip3 install requests
+pip3 install requests pyyaml
 # or
-python3 -m pip install requests
+python3 -m pip install requests pyyaml
 ```
 
 ## Quick Start
@@ -429,12 +429,84 @@ terraform apply
 
 1. Create a new folder (e.g., `lab02/`)
 2. Add your CML YAML topology file to the folder
-3. Update `terraform.tfvars`:
+3. **(Optional)** Add startup configuration files for nodes
+4. Update `terraform.tfvars`:
    ```hcl
    lab_folder = "lab02"
    topology_filename = "your-topology.yaml"
    ```
-4. Run `terraform apply`
+5. Run `terraform apply`
+
+### Node Startup Configurations
+
+You can optionally provide startup configurations for nodes by creating configuration files in the same lab folder:
+
+**File Naming Convention**: `<node_label>.cfg`
+
+Example for a lab with nodes labeled `Router01` and `Switch01`:
+```
+lab01/
+├── TF_-_Topo_Automation.yaml
+├── Router01.cfg              # Optional startup config
+└── Switch01.cfg              # Optional startup config
+```
+
+**Router01.cfg example:**
+```cisco
+!
+hostname Router01
+!
+interface GigabitEthernet1
+ description Link to Switch01
+ ip address 10.0.0.1 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet2
+ description WAN Link
+ ip address dhcp
+ no shutdown
+!
+interface Loopback0
+ description Management
+ ip address 192.168.1.1 255.255.255.255
+!
+router ospf 1
+ network 10.0.0.0 0.0.0.255 area 0
+ network 192.168.1.1 0.0.0.0 area 0
+!
+end
+```
+
+**Switch01.cfg example:**
+```cisco
+!
+hostname Switch01
+!
+vlan 10
+ name DATA
+!
+vlan 20
+ name VOICE
+!
+interface GigabitEthernet1/0/1
+ description Trunk to Router01
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20
+!
+interface GigabitEthernet1/0/2
+ description Access Port
+ switchport mode access
+ switchport access vlan 10
+!
+end
+```
+
+**Important Notes:**
+- Configuration files are **completely optional** - if no `.cfg` file exists for a node, it will start with empty/default configuration
+- Configuration is injected at import time, not after nodes boot
+- The node label in the YAML topology must match the configuration filename (case-sensitive)
+- Configurations are applied on first boot
+- For nodes that don't need configuration (like `external_connector` or `unmanaged_switch`), simply don't create a config file
 
 ### YAML Topology Requirements
 

@@ -87,5 +87,14 @@ terraform apply
 ├── terraform.tfvars        # Your config (never commit!)
 ├── .lab_id.txt             # Temp file (auto-generated)
 └── lab01/                  # Lab topology folder
-    └── TF_-_Topo_Automation.yaml
+    ├── TF_-_Topo_Automation.yaml
+    ├── Router01.cfg        # Optional node config
+    └── Switch01.cfg        # Optional node config
 ```
+
+## Node Configurations
+
+Add optional startup configurations by creating `.cfg` files matching node labels:
+- `<NodeLabel>.cfg` in the same folder as the topology YAML
+- Completely optional - nodes without config files will start with defaults
+- Configurations are injected at import time
